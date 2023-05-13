@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{9fc4fdcc-2f91-4a45-81de-c23b5158520a}</ProjectGuid>
-    <RootNamespace>BacteriaGameProject</RootNamespace>
+    <ProjectGuid>{356209d4-2664-48d7-8fba-67ca08020fc8}</ProjectGuid>
+    <RootNamespace>BacteriaGame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,11 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FileName.cpp" />
-    <ClCompile Include="Mouse.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Mouse.h" />
+    <ClCompile Include="소스.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
