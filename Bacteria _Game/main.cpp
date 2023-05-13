@@ -4,21 +4,23 @@ using namespace std;
 using namespace doodle;
 int count_num = 1;
 class Stage1 {
+	
 	int finish_count = 0;
 public:
 	void init() {
 
 	}
 	void logic() {
-
+		//이곳에 캐릭터또는 키보드를 이용한 움직임
 	}
 	void draw() {
-
+		//이곳에 스테이지 배경 캐릭터사진
 	}
 	int end() {
 		return finish_count;
 	}
 };
+
 class Stage2 {
 	int finish_count = 0;
 public:
@@ -26,10 +28,10 @@ public:
 
 	}
 	void logic() {
-
+		//이곳에 캐릭터또는 키보드를 이용한 움직임
 	}
 	void draw() {
-
+		//이곳에 스테이지 배경 캐릭터사진
 	}
 	int end() {
 		return finish_count;
@@ -42,10 +44,10 @@ public:
 
 	}
 	void logic() {
-
+		//이곳에 캐릭터또는 키보드를 이용한 움직임
 	}
 	void draw() {
-
+		//이곳에 스테이지 배경 캐릭터사진
 	}
 	int end() {
 		return finish_count;
@@ -58,15 +60,16 @@ public:
 
 	}
 	void logic() {
-
+		//이곳에 캐릭터또는 키보드를 이용한 움직임
 	}
 	void draw() {
-
+		//이곳에 스테이지 배경 캐릭터사진
 	}
 	int end() {
 		return finish_count;
 	}
 };
+
 class Stage5 {
 	int finish_count = 0;
 public:	
@@ -74,15 +77,16 @@ public:
 
 	}
 	void logic() {
-
+		//이곳에 캐릭터또는 키보드를 이용한 움직임
 	}
 	void draw() {
-
+		//이곳에 스테이지 배경 캐릭터사진 
 	}
 	int end() {
 		return finish_count;
 	}
 };
+//스테이지를 넘어가는곳 건드릴 필요없음
 int main() {
 	Stage1 stage1;
 	stage1.init();
