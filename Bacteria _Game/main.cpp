@@ -1,8 +1,14 @@
 #include <doodle/doodle.hpp>
-#include<iostream>
+#include <conio.h>
+#include<windows.h>
+#include <string>
+#include <exception>
+#include <iostream>
 using namespace std;
 using namespace doodle;
-int count_num = 1;
+int count_num = 2;
+double x = -20;
+double y = -300;
 class Stage1 {
 	
 	int finish_count = 0;
@@ -23,15 +29,35 @@ public:
 
 class Stage2 {
 	int finish_count = 0;
+	Image orangeHero;
+	Image Background;
 public:
 	void init() {
-
+		Background = Image("./Game_Stage/Stage1_Background.png");
+		orangeHero = Image( "./Game characters/germ_1.png" );
+		
 	}
 	void logic() {
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
+		switch (_getch()) {
+		case 75:
+			x -= 1;
+			break;
+		case 77:
+			x += 1;
+			break;
+		}
+		
 	}
+		
+		
+	
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
+		draw_image(Background, -360,360, 720, 720);
+		draw_image(orangeHero, x, y,50,50);
+		
+		
 	}
 	int end() {
 		return finish_count;
@@ -100,6 +126,8 @@ int main() {
 	stage5.init();
 	create_window(720, 720);
 	while (!is_window_closed()) {
+		update_window();
+		clear_background(HexColor{ 0xFFFFFFFF });
 		switch (count_num)
 		{
 		case 1:
