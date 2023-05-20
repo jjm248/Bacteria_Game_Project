@@ -6,9 +6,12 @@
 #include <iostream>
 using namespace std;
 using namespace doodle;
+int Space1[720];
+int Space2[720];
 int count_num = 2;
-double x = -20;
-double y = -300;
+int count_heart = 0;  
+int x = -20;
+int y = 340;
 class Stage1 {
 	
 	int finish_count = 0;
@@ -45,26 +48,30 @@ public:
 		switch (_getch()) {
 		case 75:
 			x -= 1;
+			draw();
 			break;
 		case 77:
 			x += 1;
+			draw();
 			break;
 		}
-		
+		while (count_heart == 10) {
+			y -= 1;
+			draw();
+			if (y == -350) {
+
+			}
+		}
+		if (count_heart == 10) {
+			finish_count += 1;
+		}
 	}
-		
-		
-	
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
 		draw_image(Background, -360,360, 720, 720);
-		draw_image(orangeHero, x, y,50,50);
-		draw_image(gastric, rand() % 360, 340, 50, 50);
-		draw_image(heart, rand() % 360, 340, 50, 50);
-		
-
-
-
+		draw_image(orangeHero, Space1[x],-300, 50, 50);
+		draw_image(gastric, rand() % 360, y, 50, 50);
+		draw_image(heart, rand() % 360, y, 50, 50);
 	}
 	int end() {
 		return finish_count;
