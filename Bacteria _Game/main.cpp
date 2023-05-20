@@ -8,9 +8,8 @@
 using namespace std;
 using namespace doodle;
 
-int count_num = 1;
-double x = -20;
-double y = -300;
+int count_num = 2;
+
 	
 	
 	class Stage1 {
@@ -161,9 +160,18 @@ double y = -300;
 		return finish_count;
 	}
 };
-
+void remake() {
+	int rd1 = rand() % 720 - 360;
+	int rd2 = rand() % 720 - 360;
+}
 class Stage2 {
+	bool is_trigger = false;
+	int count_heart = 0;
 	int finish_count = 0;
+	int rd1 = rand() % 720 - 360;
+	int rd2 = rand() % 720 - 360;
+	int y = 340;
+	int x = -20;
 	Image orangeHero;
 	Image Background;
 	Image gastric;
@@ -177,25 +185,38 @@ public:
 	}
 	void logic() {
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
-		switch (_getch()) {
-		case 75:
-			x -= 1;
-			break;
-		case 77:
-			x += 1;
-			break;
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
+			x -= 10;
 		}
-		
+
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+			x += 10;
+		}
+		if (y<=-340) {
+			remake();
+			y = 320;
+		}
+		else {
+			y -= rand() % 5;
+		}
+		if (count_heart == 10) {
+			finish_count += 1;
+		}
+		if (rd2 == x || y == -300) {
+			count_heart += 1;
+			remake();
+			y = 320;
+		}
 	}
 		
 		
 	
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
-		draw_image(Background, -360,360, 720, 720);
-		draw_image(orangeHero, x, y,50,50);
-		draw_image(gastric, rand() % 360, 340, 50, 50);
-		draw_image(heart, rand() % 360, 340, 50, 50);
+		draw_image(Background, -360, -360, 720, 720);
+		draw_image(orangeHero, x, -300, 50, 50);
+		draw_image(gastric, rd1, y, 50, 50);
+		draw_image(heart, rd2, y, 50, 50);
 		
 
 
