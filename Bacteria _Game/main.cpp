@@ -31,11 +31,14 @@ class Stage2 {
 	int finish_count = 0;
 	Image orangeHero;
 	Image Background;
+	Image gastric;
+	Image heart;
 public:
 	void init() {
 		Background = Image("./Game_Stage/Stage1_Background.png");
-		orangeHero = Image( "./Game characters/germ_1.png" );
-		
+		gastric = Image("./Game_Stage/gastric_juice.png");
+		heart = Image("./Game_Stage/heart.png");
+		orangeHero = Image("./Game characters/germ_1.png");
 	}
 	void logic() {
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
@@ -56,8 +59,12 @@ public:
 		//이곳에 스테이지 배경 캐릭터사진
 		draw_image(Background, -360,360, 720, 720);
 		draw_image(orangeHero, x, y,50,50);
+		draw_image(gastric, rand() % 360, 340, 50, 50);
+		draw_image(heart, rand() % 360, 340, 50, 50);
 		
-		
+
+
+
 	}
 	int end() {
 		return finish_count;
