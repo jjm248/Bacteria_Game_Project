@@ -1,4 +1,6 @@
 #include <doodle/doodle.hpp>
+#include<time.h>
+#include<stdlib.h>
 #include <conio.h>
 #include<windows.h>
 #include <string>
@@ -8,7 +10,7 @@
 using namespace std;
 using namespace doodle;
 
-int count_num = 2;
+int count_num = 3;
 
 	
 	
@@ -160,67 +162,96 @@ int count_num = 2;
 		return finish_count;
 	}
 };
-void remake() {
+
+class Stage2 {
+	
 	int rd1 = rand() % 720 - 360;
 	int rd2 = rand() % 720 - 360;
-}
-class Stage2 {
 	bool is_trigger = false;
 	int count_heart = 0;
 	int finish_count = 0;
-	int rd1 = rand() % 720 - 360;
-	int rd2 = rand() % 720 - 360;
-	int y = 340;
+	int y1 = 340;
+	int y2 = 340;
+	int germ_x = -300;
 	int x = -20;
 	Image orangeHero;
 	Image Background;
 	Image gastric;
 	Image heart;
+	Image over;
+	Image d_germ;
+	Image Back;
+
 public:
+	void remake1() {
+		rd1 = rand() % 720 - 360;
+	}
+	void remake2() {
+		rd2 = rand() % 720 - 360;
+	}
 	void init() {
+		Back = Image{ "./Game_Stage/Stage1_Background.jpg" };
+		d_germ = Image{ "./Game characters/dead_germ.png" };
+		over = Image{ "./Game_Stage/GAME_OVER.png" };
 		Background = Image("./Game_Stage/Stage1_Background.jpg");
 		gastric = Image("./Game_Stage/gastric_juice.png");
 		heart = Image("./Game_Stage/heart.png");
 		orangeHero = Image("./Game characters/germ_1.png");
 	}
 	void logic() {
+
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
-		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-			x -= 10;
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {						//키보드움직임
+			x -= 1;
 		}
 
-		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-			x += 10;
+		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {						//키보드움직임
+			x += 1;
 		}
-		if (y<=-340) {
-			remake();
-			y = 320;
+		if (y1<=-340) {
+			remake1();													//충돌체크
+			y1 = 340;
 		}
 		else {
-			y -= rand() % 5;
+			y1 -= rand() % 2;											//gastric움직임
+		}
+		if (y2 <= -340) {
+			remake2();													//heart움직임
+			y2 = 340;
+		}
+		else {
+			y2 -= rand() % 2;
 		}
 		if (count_heart == 10) {
 			finish_count += 1;
 		}
-		if (rd2 == x || y == -300) {
-			count_heart += 1;
-			remake();
-			y = 320;
+		if (rd2 <= x+70&&rd2>=x-70) {
+			if (y2 <= germ_x+70&& y2 >= germ_x - 70) {					// 게임오버 화면 실행
+				count_heart += 1;
+				remake2();
+				y2 = 320;
+				cout << count_heart;
+				
+			}
+		}
+		if (rd1 <= x + 50 && rd1 >= x - 50) {
+			if (y1 <= germ_x + 50 && y1 >= germ_x - 50) {				// 게임오버 화면 실행
+				is_trigger = true;
+			}
 		}
 	}
-		
-		
-	
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
-		draw_image(Background, -360, -360, 720, 720);
-		draw_image(orangeHero, x, -300, 50, 50);
-		draw_image(gastric, rd1, y, 50, 50);
-		draw_image(heart, rd2, y, 50, 50);
-		
+		draw_image(Background, -360, -360, 720, 720);					//배경화면
+		draw_image(orangeHero, x, germ_x, 50, 50);						//캐릭터
+		draw_image(gastric, rd1, y1, 50, 50);							//장애물
+		draw_image(heart, rd2, y2, 50, 50);								//하트
 
-
-
+		if (is_trigger) {
+			draw_image(Back, -360, -360, 720, 720);				
+			draw_image(over, -300, -360, 600, 800);						//게임오버화면 그리기
+			draw_image(d_germ, -100, -360, 300, 250);
+		}
 	}
 	int end() {
 		return finish_count;
@@ -228,15 +259,24 @@ public:
 };
 class Stage3 {
 	int finish_count = 0;
+	Image Germ;
+	Image Mold;
+	Image Background;
 public:
 	void init() {
-
+		Germ = Image{ "./Game characters/<germ_2.png" };
+		Mold = Image{ "./Game characters/<Mold_1.png" };
+		Background = Image("./Game_Stage/Stage1_Background.jpg");
 	}
 	void logic() {
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
+
 	}
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
+		draw_image(Background, -360, -360, 720, 720);
+		draw_image(Germ, -200,  - 300, 100, 100);
+		draw_image(Mold, 200, -300, 100, 100);
 	}
 	int end() {
 		return finish_count;
