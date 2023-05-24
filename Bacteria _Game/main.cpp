@@ -10,7 +10,7 @@
 using namespace std;
 using namespace doodle;
 
-int count_num = 3;
+int count_num = 1;
 
 	
 	
@@ -202,25 +202,25 @@ public:
 
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {						//키보드움직임
-			x -= 1;
+			x -= 6;
 		}
 
 		if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {						//키보드움직임
-			x += 1;
+			x += 6;
 		}
 		if (y1<=-340) {
 			remake1();													//충돌체크
 			y1 = 340;
 		}
 		else {
-			y1 -= rand() % 2;											//gastric움직임
+			y1 -= rand() % 12;											//gastric움직임
 		}
 		if (y2 <= -340) {
 			remake2();													//heart움직임
 			y2 = 340;
 		}
 		else {
-			y2 -= rand() % 2;
+			y2 -= rand() % 10;
 		}
 		if (count_heart == 10) {
 			finish_count += 1;
@@ -259,14 +259,8 @@ public:
 };
 class Stage3 {
 	int finish_count = 0;
-	Image Germ;
-	Image Mold;
-	Image Background;
 public:
 	void init() {
-		Germ = Image{ "./Game characters/<germ_2.png" };
-		Mold = Image{ "./Game characters/<Mold_1.png" };
-		Background = Image("./Game_Stage/Stage1_Background.jpg");
 	}
 	void logic() {
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
@@ -274,9 +268,6 @@ public:
 	}
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
-		draw_image(Background, -360, -360, 720, 720);
-		draw_image(Germ, -200,  - 300, 100, 100);
-		draw_image(Mold, 200, -300, 100, 100);
 	}
 	int end() {
 		return finish_count;
@@ -334,11 +325,13 @@ int main() {
 		switch (count_num)
 		{
 		case 1:
+			set_image_mode(RectMode::Center);
 			stage1.logic();
 			stage1.draw();
 			count_num += stage1.end();
 			break;
 		case 2:
+			set_image_mode(RectMode::Corner);
 			stage2.logic();
 			stage2.draw();
 			count_num += stage2.end();
