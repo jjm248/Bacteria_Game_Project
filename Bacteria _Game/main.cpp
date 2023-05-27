@@ -10,7 +10,7 @@
 using namespace std;
 using namespace doodle;
 
-int count_num = 1;
+int count_num = 2;
 
 	
 	
@@ -181,13 +181,24 @@ class Stage2 {
 	Image over;
 	Image d_germ;
 	Image Back;
-
+	Image number;
+	Image number_of_hearts;
+	Image one;
+	Image two;
+	Image three;
+	Image four;
+	Image five;
+	Image six;
+	Image seven;
+	Image eight;
+	Image nine;
+	Image ten;
 public:
 	void remake1() {
-		rd1 = rand() % 720 - 360;
+		rd1 = rand() % 680 - 340;
 	}
 	void remake2() {
-		rd2 = rand() % 720 - 360;
+		rd2 = rand() % 680 - 340;
 	}
 	void init() {
 		Back = Image{ "./Game_Stage/Stage1_Background.jpg" };
@@ -197,6 +208,17 @@ public:
 		gastric = Image("./Game_Stage/gastric_juice.png");
 		heart = Image("./Game_Stage/heart.png");
 		orangeHero = Image("./Game characters/germ_1.png");
+		number_of_hearts = Image("./Game_Stage/number_of_hearts.png");
+		one = Image("./Game_Stage/1.png");
+		two = Image("./Game_Stage/2.png");
+		three = Image("./Game_Stage/3.png");
+		four = Image("./Game_Stage/4.png");
+		five = Image("./Game_Stage/5.png");
+		six = Image("./Game_Stage/6.png");
+		seven = Image("./Game_Stage/7.png");
+		eight = Image("./Game_Stage/8.png");
+		nine = Image("./Game_Stage/9.png");
+		ten = Image("./Game_Stage/10.png");
 	}
 	void logic() {
 
@@ -223,7 +245,7 @@ public:
 			y2 -= rand() % 10;
 		}
 		if (count_heart == 10) {
-			finish_count += 1;
+			finish_count = 1;
 		}
 		if (rd2 <= x+70&&rd2>=x-70) {
 			if (y2 <= germ_x+70&& y2 >= germ_x - 70) {					// 게임오버 화면 실행
@@ -242,15 +264,49 @@ public:
 	}
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
+		
 		draw_image(Background, -360, -360, 720, 720);					//배경화면
 		draw_image(orangeHero, x, germ_x, 50, 50);						//캐릭터
 		draw_image(gastric, rd1, y1, 50, 50);							//장애물
 		draw_image(heart, rd2, y2, 50, 50);								//하트
-
+		draw_image(number_of_hearts, 0, 0, 500, 500,200,200,400,400);
+		
 		if (is_trigger) {
 			draw_image(Back, -360, -360, 720, 720);				
 			draw_image(over, -300, -360, 600, 800);						//게임오버화면 그리기
 			draw_image(d_germ, -100, -360, 300, 250);
+		}
+		switch (count_heart) {
+		case 1:
+			draw_image(one, 250, 330, 30, 30);
+			break;
+		case 2:
+			draw_image(two, 250, 330, 30, 30);
+			break;
+		case 3:
+			draw_image(three, 250, 330, 30, 30);
+			break;
+		case 4:
+			draw_image(four, 250, 330, 30, 30);
+			break;
+		case 5:
+			draw_image(five, 250, 330, 30, 30);
+			break;
+		case 6:
+			draw_image(six, 250, 330, 30, 30);
+			break;
+		case 7:
+			draw_image(seven, 250, 300, 30, 30);
+			break;
+		case 8:
+			draw_image(eight, 250, 330, 30, 30);
+			break;
+		case 9:
+			draw_image(nine, 250, 330, 30, 30);
+			break;
+		case 10:
+			draw_image(ten, 250, 330, 30, 30);
+			break;
 		}
 	}
 	int end() {
