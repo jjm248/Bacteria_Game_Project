@@ -302,7 +302,6 @@ public:
 			if (rd1 <= x + 50 && rd1 >= x - 50) {
 				if (y1 <= germ_x + 50 && y1 >= germ_x - 50) {				// 게임오버 화면 실행
 					is_trigger = true;
-					Start = false;
 				}
 			}
 			if (clear == true) {
