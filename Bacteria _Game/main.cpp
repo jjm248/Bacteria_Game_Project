@@ -10,7 +10,7 @@
 using namespace std;
 using namespace doodle;
 
-int count_num = 2;
+int count_num = 1;
 
 bool shouldFollowMouse = false;
 
@@ -48,8 +48,9 @@ public:
 	bool is_trigger = false;
 	bool clear = false;
 	bool Start = false;
-	double x1{ 330};
-	double y1{ 330};
+	bool Manager = false;
+	double x1{ 310};
+	double y1{ 300};
 	
 
 	void init() {
@@ -84,12 +85,21 @@ public:
 				y1 += easing * (get_mouse_y() - y1);
 			}
 
-			if (x1 >= 360) {
-				x1 = 360;
+			if (GetAsyncKeyState(VK_LEFT) & 0x8000) {						// 관리자 비밀(버그)키
+				if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+					Manager = true;
+				}
 			}
 
-			if (x1 <= -360) {
-				x1 = -360;
+			if (Manager == false)
+			{
+				if (x1 >= 360) {
+					x1 = 360;
+				}
+
+				if (x1 <= -360) {
+					x1 = -360;
+				}
 			}
 
 			// 미로 충돌 코드 ↓↓↓↓
