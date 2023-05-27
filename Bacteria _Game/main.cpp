@@ -12,6 +12,19 @@ using namespace doodle;
 
 int count_num = 1;
 
+bool shouldFollowMouse = false;
+
+void on_mouse_pressed(MouseButtons button)
+{
+	if (button == MouseButtons::Left)
+		shouldFollowMouse = true;
+}
+
+void on_mouse_released(MouseButtons button)
+{
+	if (button == MouseButtons::Left)
+		shouldFollowMouse = false;
+}
 
 
 class Stage1 {
@@ -35,6 +48,9 @@ public:
 	bool is_trigger = false;
 	bool clear = false;
 	bool Start = false;
+	double x1{ 330};
+	double y1{ 330};
+	
 
 	void init() {
 
@@ -54,28 +70,19 @@ public:
 		Stage1_Start = Image{ "./Game_Stage/Stage1_Start.jpg" };
 	}
 
-	double                   angle{ 0.0 };
-	double                   grey{ 0 };
-	double                   x1{ 360 };
-	double                   y1{ 360 };
+	
 
-	void on_mouse_moved(int mouse_x, int mouse_y) // 마우스 인식 코드
-	{
-		angle += to_radians(3.0);
-		grey = 255 * (std::sin(angle) * 0.5 + 0.5);
-		x1 = mouse_x;
-		y1 = mouse_y;
-
-	}
+	
 
 	void logic() {
 		//이곳에 캐릭터또는 마우스를 이용한 움직임
 		if (Start == true) {
-			x1 = get_mouse_x();
-			y1 = get_mouse_y();
-
-			set_image_mode(RectMode::Center);
-			set_rectangle_mode(RectMode::Center);
+			if (shouldFollowMouse)
+			{
+				const double easing = 3.0 * DeltaTime;
+				x1 += easing * (get_mouse_x() - x1);
+				y1 += easing * (get_mouse_y() - y1);
+			}
 
 			// 미로 충돌 코드 ↓↓↓↓
 			if (x1 >= -258) {
@@ -144,7 +151,7 @@ public:
 					}
 				}
 			}
-
+			
 			if (clear == true) {
 				if (GetAsyncKeyState(VK_SPACE) & 0x0001) {
 					finish_count = 1;
@@ -158,10 +165,12 @@ public:
 		//이곳에 스테이지 배경 캐릭터사진
 		clear_background(255, 255, 255, 255);                         // 화면 색
 		draw_image(Stage1_Start, 0, 0, 720, 720);
-
+		
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
 			Start = true;
 			cout << "스타트" << endl;
+			draw_image(germ2, 330, 330, 200, 300);
+			
 		}
 
 		if (Start) {
@@ -185,6 +194,7 @@ public:
 				draw_image(game_clear, 0, 240, 700, 500);
 				draw_image(Space_bar, 0, -300, 300, 50);
 			}
+			
 		}
 	}
 	int end() {
@@ -291,7 +301,7 @@ public:
 
 			}
 			if (rd2 <= x + 70 && rd2 >= x - 70) {
-				if (y2 <= germ_x + 70 && y2 >= germ_x - 70) {					// 게임오버 화면 실행
+				if (y2 <= germ_x + 70 && y2 >= germ_x - 70) {				// 
 					count_heart += 1;
 					remake2();
 					y2 = 320;
@@ -299,7 +309,7 @@ public:
 
 				}
 			}
-			if (rd1 <= x + 50 && rd1 >= x - 50) {
+			if (rd1 <= x + 30 && rd1 >= x - 30) {
 				if (y1 <= germ_x + 50 && y1 >= germ_x - 50) {				// 게임오버 화면 실행
 					is_trigger = true;
 				}
@@ -335,38 +345,41 @@ public:
 				draw_image(over, -300, -360, 600, 800);						//게임오버화면 그리기
 				draw_image(d_germ, -100, -360, 300, 250);
 			}
-			switch (count_heart) {
-			case 1:
-				draw_image(one, 250, 330, 30, 30);
-				break;
-			case 2:
-				draw_image(two, 250, 330, 30, 30);
-				break;
-			case 3:
-				draw_image(three, 250, 330, 30, 30);
-				break;
-			case 4:
-				draw_image(four, 250, 330, 30, 30);
-				break;
-			case 5:
-				draw_image(five, 250, 330, 30, 30);
-				break;
-			case 6:
-				draw_image(six, 250, 330, 30, 30);
-				break;
-			case 7:
-				draw_image(seven, 250, 300, 30, 30);
-				break;
-			case 8:
-				draw_image(eight, 250, 330, 30, 30);
-				break;
-			case 9:
-				draw_image(nine, 250, 330, 30, 30);
-				break;
-			case 10:
-				draw_image(ten, 250, 330, 30, 30);
-				break;
+			if(is_trigger == false){
+				switch (count_heart) {
+				case 1:
+					draw_image(one, 250, 330, 30, 30);
+					break;
+				case 2:
+					draw_image(two, 250, 330, 30, 30);
+					break;
+				case 3:
+					draw_image(three, 250, 330, 30, 30);
+					break;
+				case 4:
+					draw_image(four, 250, 330, 30, 30);
+					break;
+				case 5:
+					draw_image(five, 250, 330, 30, 30);
+					break;
+				case 6:
+					draw_image(six, 250, 330, 30, 30);
+					break;
+				case 7:
+					draw_image(seven, 250, 300, 30, 30);
+					break;
+				case 8:
+					draw_image(eight, 250, 330, 30, 30);
+					break;
+				case 9:
+					draw_image(nine, 250, 330, 30, 30);
+					break;
+				case 10:
+					draw_image(ten, 250, 330, 30, 30);
+					break;
+				}
 			}
+			
 			if (clear) {
 				draw_image(Background, -360, -360, 720, 720);
 				draw_image(germ_3, -100, -200, 200, 300);
