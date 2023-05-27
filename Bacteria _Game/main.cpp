@@ -10,7 +10,7 @@
 using namespace std;
 using namespace doodle;
 
-int count_num = 1;
+int count_num = 2;
 
 bool shouldFollowMouse = false;
 
@@ -304,6 +304,12 @@ public:
 			else {
 				y2 -= rand() % 10;
 			}
+			if (x >= 350) {
+				x = 330;
+			}
+			else if (x <= -360) {
+				x = -360;
+			}
 			if (count_heart == 10) {
 				clear = true;
 
@@ -328,6 +334,7 @@ public:
 
 				}
 			}
+
 		}
 
 	}
