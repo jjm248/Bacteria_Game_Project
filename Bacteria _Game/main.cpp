@@ -10,7 +10,7 @@
 using namespace std;
 using namespace doodle;
 
-int count_num = 5;
+int count_num = 4;
 
 bool shouldFollowMouse = false;
 
@@ -631,15 +631,82 @@ public:
 };
 class Stage4 {
 	int finish_count = 0;
+	int size = 130;
+	int x_p1 = 330;
+	int x_p2 = 330;
+	int x_p3 = 330;
+	int rd1;
+	int rd2;
+	int rd3;
+	int germ_x = -250;
+	int germ_y = -50;
+	int red_cell_size = 80;
+	bool Manager = false;
+	bool mouse_press = false;
+	Image Stage_4_Background;
+	Image red_blood_cell[3];
+	Image germ_2;
+	Image red_cell_come;
 public:
+	void remake1() {
+		rd1 = rand() % 300 - 150;
+	}
+	void remake2() {
+		rd2 = rand() % 300 - 150;
+	}
+	void remake3() {
+		rd3 = rand() % 300 - 150;
+	}
 	void init() {
-
+		germ_2 = Image{ "./Game characters/germ_2.png" };
+		Stage_4_Background = Image{ "./Game_Stage/Stage_4_Background.jpg" };
+		red_blood_cell[0] = Image{ "./Game characters/red_blood_cell.png" };
+		red_blood_cell[1] = Image{ "./Game characters/red_blood_cell.png" };
+		red_blood_cell[2] = Image{ "./Game characters/red_blood_cell.png" };
 	}
 	void logic() {
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
+		
+		if (shouldFollowMouse)
+		{
+			const double easing = 30.0 * DeltaTime;
+			germ_y += easing * (get_mouse_y() - germ_y);
+			if (germ_y >= 150) {
+				germ_y = 150;
+			}
+
+			if (germ_y <= -150) {
+				germ_y = -150;
+			}
+		}
+		if (x_p1 <= -330) {
+			remake1();
+			x_p1 = 330;
+		}
+		else
+			x_p1 -= rand()%60;
+
+		if (x_p2 <= -330) {
+			remake2();
+			x_p2 = 330;
+		}
+		else
+			x_p2 -= rand()%60;
+
+		if (x_p3 <= -330) {
+			remake3();
+			x_p3 = 330;
+		}
+		else
+			x_p3 -= rand() % 60;
 	}
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
+		draw_image(Stage_4_Background, 0, 0,1440,720);
+		draw_image(germ_2, germ_x, germ_y ,size, size);
+		draw_image(red_blood_cell[0], x_p1, rd1, red_cell_size, red_cell_size);
+		draw_image(red_blood_cell[1], x_p2, rd2, red_cell_size, red_cell_size);
+		draw_image(red_blood_cell[2], x_p3, rd3, red_cell_size, red_cell_size);
 	}
 	int end() {
 		return finish_count;
@@ -1008,7 +1075,7 @@ int main() {
 			count_num += stage1.end();
 			break;
 		case 2:
-			set_image_mode(RectMode::Corner);
+			set_image_mode(RectMode::Center);
 			stage2.logic();
 			stage2.draw();
 			count_num += stage2.end();
@@ -1020,6 +1087,7 @@ int main() {
 			count_num += stage3.end();
 			break;
 		case 4:
+			set_image_mode(RectMode::Center);
 			stage4.logic();
 			stage4.draw();
 			count_num += stage4.end();
