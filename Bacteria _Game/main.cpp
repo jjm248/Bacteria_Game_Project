@@ -631,18 +631,25 @@ public:
 };
 class Stage4 {
 	int finish_count = 0;
-	int size = 130;
+	int size = 80;
 	int x_p1 = 330;
 	int x_p2 = 330;
 	int x_p3 = 330;
 	int rd1;
 	int rd2;
 	int rd3;
+	int speed1 = 4;
+	int speed2 = 4;
+	int speed3 = 4;
 	int germ_x = -250;
 	int germ_y = -50;
 	int red_cell_size = 80;
 	bool Manager = false;
 	bool mouse_press = false;
+	bool is_trigger = false;
+	Image over;
+	Image d_germ;
+	Image Back;
 	Image Stage_4_Background;
 	Image red_blood_cell[3];
 	Image germ_2;
@@ -650,12 +657,18 @@ class Stage4 {
 public:
 	void remake1() {
 		rd1 = rand() % 300 - 150;
+		x_p1 = 330 + rand() % 100;
+		cout << "rd1 :" << rd1<<endl;
 	}
 	void remake2() {
 		rd2 = rand() % 300 - 150;
+		x_p2 = 330 + rand() % 100;
+		cout << "rd2 : " << rd2<<endl;
 	}
 	void remake3() {
 		rd3 = rand() % 300 - 150;
+		x_p3 = 330 + rand() % 100;
+		cout << "rd3 : " << rd3 << endl;
 	}
 	void init() {
 		germ_2 = Image{ "./Game characters/germ_2.png" };
@@ -663,6 +676,12 @@ public:
 		red_blood_cell[0] = Image{ "./Game characters/red_blood_cell.png" };
 		red_blood_cell[1] = Image{ "./Game characters/red_blood_cell.png" };
 		red_blood_cell[2] = Image{ "./Game characters/red_blood_cell.png" };
+		Back = Image{ "./Game_Stage/Stage1_Background.jpg" };
+		d_germ = Image{ "./Game characters/dead_germ.png" };
+		over = Image{ "./Game_Stage/GAME_OVER.png" };
+		remake1();
+		remake2();
+		remake3();
 	}
 	void logic() {
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
@@ -672,33 +691,50 @@ public:
 			const double easing = 30.0 * DeltaTime;
 			germ_y += easing * (get_mouse_y() - germ_y);
 			if (germ_y >= 150) {
-				germ_y = 150;
+				is_trigger = true;
 			}
 
 			if (germ_y <= -150) {
-				germ_y = -150;
+				is_trigger = true;
 			}
 		}
 		if (x_p1 <= -330) {
 			remake1();
-			x_p1 = 330;
+			//x_p1 = 330 + rand() % 100;
+			
+		}		
+		else {
+			x_p1 -= speed1;
+			if (x_p1 <= -330) {
+				speed1 += 1;
+			}
 		}
-		else
-			x_p1 -= rand()%60;
 
 		if (x_p2 <= -330) {
 			remake2();
-			x_p2 = 330;
+			x_p2 = 330 + rand() % 100;
 		}
-		else
-			x_p2 -= rand()%60;
+		else {
+			x_p2 -= speed2;
+			if (x_p2 <= -330) {
+				speed2 += 1;
+			}
+		}
 
 		if (x_p3 <= -330) {
 			remake3();
-			x_p3 = 330;
+			x_p3 = 330 + rand() % 100;
 		}
-		else
-			x_p3 -= rand() % 60;
+		else {
+			x_p3 -= speed3;
+			if (x_p3 <= -330) {
+				speed3 += 1;
+			}
+		}
+			
+				
+			
+		
 	}
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
@@ -707,7 +743,13 @@ public:
 		draw_image(red_blood_cell[0], x_p1, rd1, red_cell_size, red_cell_size);
 		draw_image(red_blood_cell[1], x_p2, rd2, red_cell_size, red_cell_size);
 		draw_image(red_blood_cell[2], x_p3, rd3, red_cell_size, red_cell_size);
+		if (is_trigger) {
+			draw_image(Back, 0, 0, 720, 720);
+			draw_image(over, 0, 150, 600, 800);						//게임오버화면 그리기
+			draw_image(d_germ, 0,-200, 300, 250);
+		}
 	}
+	
 	int end() {
 		return finish_count;
 	}
