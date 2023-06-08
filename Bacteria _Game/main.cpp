@@ -630,6 +630,7 @@ public:
 	}
 };
 class Stage4 {
+	
 	int finish_count = 0;
 	int size = 80;
 	int x_p1 = 330;
@@ -638,12 +639,15 @@ class Stage4 {
 	int rd1;
 	int rd2;
 	int rd3;
-	int speed1 = 4;
-	int speed2 = 4;
-	int speed3 = 4;
+	int speed1 = 1;
+	int speed2 = 1;
+	int speed3 = 1;
 	int germ_x = -250;
 	int germ_y = -50;
 	int red_cell_size = 80;
+	int count_speed1 = 0;
+	int count_speed2 = 0;
+	int count_speed3 = 0;
 	bool Manager = false;
 	bool mouse_press = false;
 	bool is_trigger = false;
@@ -658,17 +662,17 @@ public:
 	void remake1() {
 		rd1 = rand() % 300 - 150;
 		x_p1 = 330 + rand() % 100;
-		cout << "rd1 :" << rd1<<endl;
+		
 	}
 	void remake2() {
 		rd2 = rand() % 300 - 150;
 		x_p2 = 330 + rand() % 100;
-		cout << "rd2 : " << rd2<<endl;
+		
 	}
 	void remake3() {
 		rd3 = rand() % 300 - 150;
 		x_p3 = 330 + rand() % 100;
-		cout << "rd3 : " << rd3 << endl;
+		
 	}
 	void init() {
 		germ_2 = Image{ "./Game characters/germ_2.png" };
@@ -698,42 +702,71 @@ public:
 				is_trigger = true;
 			}
 		}
+		//적혈구1 여기부터
 		if (x_p1 <= -330) {
 			remake1();
-			//x_p1 = 330 + rand() % 100;
-			
 		}		
 		else {
 			x_p1 -= speed1;
 			if (x_p1 <= -330) {
-				speed1 += 1;
+				speed1 += 0.3;
+				count_speed1 += 1;
 			}
 		}
+		//여기까지
+		
 
+		//적혈구2 여기부터
 		if (x_p2 <= -330) {
 			remake2();
-			x_p2 = 330 + rand() % 100;
 		}
 		else {
 			x_p2 -= speed2;
 			if (x_p2 <= -330) {
-				speed2 += 1;
+				speed2 += 0.3;
+				count_speed2 += 1;
 			}
 		}
+		//여기까지
 
+		//적혈구3 여기부터
 		if (x_p3 <= -330) {
 			remake3();
-			x_p3 = 330 + rand() % 100;
+			
 		}
 		else {
 			x_p3 -= speed3;
 			if (x_p3 <= -330) {
-				speed3 += 1;
+				speed3 += 0.3;
+				count_speed3 += 1;
 			}
 		}
-			
-				
-			
+		//여기까지
+
+		if (x_p1 == germ_x) {
+			if (rd1 <= germ_y ) {									//충돌체크
+				is_trigger = true;
+			}
+		}
+		if (x_p2 == germ_x) {
+			if (rd2 <= germ_y) {									//충돌체크
+				is_trigger = true;
+			}
+		}
+		if (x_p3 == germ_x) {
+			if (rd3 <= germ_y ) {									//충돌체크
+				is_trigger = true;
+			}
+		}
+		
+		
+		if (count_speed1 == 10) {
+			if (count_speed2 == 10) {
+				if (count_speed3 == 10) {							//5스테이지로 넘어가는 조건
+					finish_count = 1;
+				}
+			}
+		}
 		
 	}
 	void draw() {
