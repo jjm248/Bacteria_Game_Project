@@ -630,7 +630,10 @@ public:
 	}
 };
 class Stage4 {
-	
+	int sum_x[3];
+	int sum_y[3];
+	int square_x[3];
+	int square_y[3];
 	int finish_count = 0;
 	int size = 80;
 	int x_p1 = 330;
@@ -662,17 +665,32 @@ public:
 	void remake1() {
 		rd1 = rand() % 300 - 150;
 		x_p1 = 330 + rand() % 100;
-		
+
 	}
 	void remake2() {
 		rd2 = rand() % 300 - 150;
 		x_p2 = 330 + rand() % 100;
-		
+
 	}
 	void remake3() {
 		rd3 = rand() % 300 - 150;
 		x_p3 = 330 + rand() % 100;
-		
+
+	}
+	void Triangle() {
+		sum_x[0] = germ_x - x_p1;
+		sum_x[1] = germ_x - x_p2;
+		sum_x[2] = germ_x - x_p3;
+
+		sum_y[0] = germ_y - rd1;
+		sum_y[1] = germ_y - rd2;
+		sum_y[2] = germ_y - rd3;
+
+		for (int i = 0; i < 3; ++i) {
+			square_x[i] = sum_x[i] * sum_x[i];
+			square_y[i] = sum_y[i] * sum_y[i];
+		}
+
 	}
 	void init() {
 		germ_2 = Image{ "./Game characters/germ_2.png" };
@@ -689,7 +707,7 @@ public:
 	}
 	void logic() {
 		//이곳에 캐릭터또는 키보드를 이용한 움직임
-		
+
 		if (shouldFollowMouse)
 		{
 			const double easing = 30.0 * DeltaTime;
@@ -705,7 +723,7 @@ public:
 		//적혈구1 여기부터
 		if (x_p1 <= -330) {
 			remake1();
-		}		
+		}
 		else {
 			x_p1 -= speed1;
 			if (x_p1 <= -330) {
@@ -714,7 +732,7 @@ public:
 			}
 		}
 		//여기까지
-		
+
 
 		//적혈구2 여기부터
 		if (x_p2 <= -330) {
@@ -732,7 +750,7 @@ public:
 		//적혈구3 여기부터
 		if (x_p3 <= -330) {
 			remake3();
-			
+
 		}
 		else {
 			x_p3 -= speed3;
@@ -741,25 +759,26 @@ public:
 				count_speed3 += 1;
 			}
 		}
+		Triangle();
 		//여기까지
+		if (square_x[0] + square_y[0] <= 4900) {
 
-		if (x_p1 == germ_x) {
-			if (rd1 <= germ_y ) {									//충돌체크
-				is_trigger = true;
-			}
+
+			is_trigger = true;
 		}
-		if (x_p2 == germ_x) {
-			if (rd2 <= germ_y) {									//충돌체크
-				is_trigger = true;
-			}
+		if (square_x[1] + square_y[1] <= 4900) {
+
+
+			is_trigger = true;
 		}
-		if (x_p3 == germ_x) {
-			if (rd3 <= germ_y ) {									//충돌체크
-				is_trigger = true;
-			}
+		if (square_x[2] + square_y[2] <= 4900) {
+
+
+			is_trigger = true;
 		}
-		
-		
+
+
+
 		if (count_speed1 == 10) {
 			if (count_speed2 == 10) {
 				if (count_speed3 == 10) {							//5스테이지로 넘어가는 조건
@@ -767,22 +786,22 @@ public:
 				}
 			}
 		}
-		
+
 	}
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
-		draw_image(Stage_4_Background, 0, 0,1440,720);
-		draw_image(germ_2, germ_x, germ_y ,size, size);
+		draw_image(Stage_4_Background, 0, 0, 1440, 720);
+		draw_image(germ_2, germ_x, germ_y, size, size);
 		draw_image(red_blood_cell[0], x_p1, rd1, red_cell_size, red_cell_size);
 		draw_image(red_blood_cell[1], x_p2, rd2, red_cell_size, red_cell_size);
 		draw_image(red_blood_cell[2], x_p3, rd3, red_cell_size, red_cell_size);
 		if (is_trigger) {
 			draw_image(Back, 0, 0, 720, 720);
 			draw_image(over, 0, 150, 600, 800);						//게임오버화면 그리기
-			draw_image(d_germ, 0,-200, 300, 250);
+			draw_image(d_germ, 0, -200, 300, 250);
 		}
 	}
-	
+
 	int end() {
 		return finish_count;
 	}
