@@ -303,9 +303,10 @@ public:
 };
 
 class Stage2 {
-
 	int rd1 = rand() % 720 - 360;
 	int rd2 = rand() % 720 - 360;
+	int ruru_x = 250;
+	int ruru_y = 330;
 	bool is_trigger = false;
 	bool clear = false;
 	bool Start = false;
@@ -505,58 +506,58 @@ public:
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
 
-		draw_image(Stage2_Start, -360, -360, 720, 720);
+		draw_image(Stage2_Start,0,0, 720, 720);
 
 
 		if (Start)
 		{
-			draw_image(Background, -360, -360, 720, 720);					//배경화면
+			draw_image(Background, 0, -0, 720, 720);					//배경화면
 			draw_image(orangeHero, x, germ_x, 50, 50);						//캐릭터
 			draw_image(gastric, rd1, y1, 50, 50);							//장애물
 			draw_image(heart, rd2, y2, 50, 50);
-			draw_image(number_of_hearts, 0, 0, 500, 500, 200, 200, 400, 400);
+			draw_image(number_of_hearts, ruru_x - 20, 230, 500, 500, 200, 200, 400, 400);
 
 			if (is_trigger) {
-				draw_image(over, -360, -360, 720, 720);
+				draw_image(over, 0, 0, 720, 720);
 			}
 			if (is_trigger == false) {
 				switch (count_heart) {
 				case 1:
-					draw_image(one, 250, 330, 30, 30);
+					draw_image(one, ruru_x, ruru_y, 30, 30);
 					break;
 				case 2:
-					draw_image(two, 250, 330, 30, 30);
+					draw_image(two, ruru_x, ruru_y, 30, 30);
 					break;
 				case 3:
-					draw_image(three, 250, 330, 30, 30);
+					draw_image(three, ruru_x, ruru_y, 30, 30);
 					break;
 				case 4:
-					draw_image(four, 250, 330, 30, 30);
+					draw_image(four, ruru_x, ruru_y, 30, 30);
 					break;
 				case 5:
-					draw_image(five, 250, 330, 30, 30);
+					draw_image(five, ruru_x, ruru_y, 30, 30);
 					break;
 				case 6:
-					draw_image(six, 250, 330, 30, 30);
+					draw_image(six, ruru_x, ruru_y, 30, 30);
 					break;
 				case 7:
-					draw_image(seven, 250, 300, 30, 30);
+					draw_image(seven, ruru_x, ruru_y, 30, 30);
 					break;
 				case 8:
-					draw_image(eight, 250, 330, 30, 30);
+					draw_image(eight, ruru_x, ruru_y, 30, 30);
 					break;
 				case 9:
-					draw_image(nine, 250, 330, 30, 30);
+					draw_image(nine, ruru_x, ruru_y, 30, 30);
 					break;
 				case 10:
-					draw_image(ten, 250, 330, 30, 30);
+					draw_image(ten, ruru_x, ruru_y, 30, 30);
 					break;
 				}
 			}
 
 
 			if (clear) {
-				draw_image(game_clear, -360, -360, 720, 720);
+				draw_image(game_clear, 0, 0, 720, 720);
 
 			}
 		}
@@ -779,6 +780,10 @@ public:
 };
 class Stage4 {
 
+	int sum_x[3];
+	int sum_y[3];
+	int square_x[3];
+	int square_y[3];
 	int finish_count = 0;
 	int size = 80;
 	int x_p1 = 330;
@@ -787,9 +792,9 @@ class Stage4 {
 	int rd1;
 	int rd2;
 	int rd3;
-	int speed1 = 1;
-	int speed2 = 1;
-	int speed3 = 1;
+	int speed1 = 10;
+	int speed2 = 10;
+	int speed3 = 10;
 	int germ_x = -250;
 	int germ_y = -50;
 	int red_cell_size = 80;
@@ -802,6 +807,7 @@ class Stage4 {
 	bool Start = false;
 	bool game_over;
 	Image over;
+	Image d_germ;
 	Image Back;
 	Image Stage_4_Background;
 	Image red_blood_cell[3];
@@ -811,7 +817,6 @@ class Stage4 {
 	Image game_clear;
 
 public:
-
 	void start() {
 		int finish_count = 0;
 		int size = 80;
@@ -821,9 +826,9 @@ public:
 		int rd1;
 		int rd2;
 		int rd3;
-		int speed1 = 1;
-		int speed2 = 1;
-		int speed3 = 1;
+		int speed1 = 10;
+		int speed2 = 10;
+		int speed3 = 10;
 		int germ_x = -250;
 		int germ_y = -50;
 		int red_cell_size = 80;
@@ -858,6 +863,21 @@ public:
 	void remake3() {
 		rd3 = rand() % 300 - 150;
 		x_p3 = 330 + rand() % 100;
+
+	}
+	void Triangle() {
+		sum_x[0] = germ_x - x_p1;
+		sum_x[1] = germ_x - x_p2;
+		sum_x[2] = germ_x - x_p3;
+
+		sum_y[0] = germ_y - rd1;
+		sum_y[1] = germ_y - rd2;
+		sum_y[2] = germ_y - rd3;
+
+		for (int i = 0; i < 3; ++i) {
+			square_x[i] = sum_x[i] * sum_x[i];
+			square_y[i] = sum_y[i] * sum_y[i];
+		}
 
 	}
 	void init() {
@@ -905,7 +925,7 @@ public:
 			else {
 				x_p1 -= speed1;
 				if (x_p1 <= -330) {
-					speed1 += 0.3;
+					speed1 += 10;
 					count_speed1 += 1;
 				}
 			}
@@ -919,7 +939,7 @@ public:
 			else {
 				x_p2 -= speed2;
 				if (x_p2 <= -330) {
-					speed2 += 0.3;
+					speed2 += 10;
 					count_speed2 += 1;
 				}
 			}
@@ -933,27 +953,36 @@ public:
 			else {
 				x_p3 -= speed3;
 				if (x_p3 <= -330) {
-					speed3 += 0.3;
+					speed3 += 10;
 					count_speed3 += 1;
 				}
 			}
 			//여기까지
 
 		}
+		Triangle();
+		//여기까지
+		if (square_x[0] + square_y[0] <= 2500) {
 
-		if (x_p1 == germ_x) {
-			if (rd1 <= germ_y) {									//충돌체크
-				is_trigger = true;
-			}
+
+			is_trigger = true;
 		}
-		if (x_p2 == germ_x) {
-			if (rd2 <= germ_y) {									//충돌체크
-				is_trigger = true;
-			}
+		if (square_x[1] + square_y[1] <= 2500) {
+
+
+			is_trigger = true;
 		}
-		if (x_p3 == germ_x) {
-			if (rd3 <= germ_y) {									//충돌체크
-				is_trigger = true;
+		if (square_x[2] + square_y[2] <= 2500) {
+
+
+			is_trigger = true;
+		}
+
+		if (count_speed1 == 10) {
+			if (count_speed2 == 10) {
+				if (count_speed3 == 10) {							//5스테이지로 넘어가는 조건
+					finish_count = 1;
+				}
 			}
 		}
 
@@ -1457,7 +1486,7 @@ int main() {
 			count_num += stage1.end();
 			break;
 		case 2:
-			set_image_mode(RectMode::Corner);
+			set_image_mode(RectMode::Center);
 			stage2.logic();
 			stage2.draw();
 			count_num += stage2.end();
@@ -1469,6 +1498,7 @@ int main() {
 			count_num += stage3.end();
 			break;
 		case 4:
+			set_image_mode(RectMode::Center);
 			stage4.logic();
 			stage4.draw();
 			count_num += stage4.end();
