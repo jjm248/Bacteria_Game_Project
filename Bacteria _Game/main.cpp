@@ -12,7 +12,7 @@ using namespace doodle;
 
 
 void reset();
-int count_num = 1;
+int count_num = 4;
 
 
 
@@ -792,9 +792,9 @@ class Stage4 {
 	int rd1;
 	int rd2;
 	int rd3;
-	int speed1 = 10;
-	int speed2 = 10;
-	int speed3 = 10;
+	int speed1 = 20;
+	int speed2 = 20;
+	int speed3 = 20;
 	int germ_x = -250;
 	int germ_y = -50;
 	int red_cell_size = 80;
@@ -826,9 +826,9 @@ public:
 		int rd1;
 		int rd2;
 		int rd3;
-		int speed1 = 10;
-		int speed2 = 10;
-		int speed3 = 10;
+		int speed1 = 20;
+		int speed2 = 20;
+		int speed3 = 20;
 		int germ_x = -250;
 		int germ_y = -50;
 		int red_cell_size = 80;
