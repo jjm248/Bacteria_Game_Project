@@ -75,10 +75,10 @@ public:
 		clear = false;
 		Start = false;
 		Manager = false;
-		//is_Opening = true;
-		//is_Opening2 = false;
-		//is_Opening3 = false;
-	//	is_Opening4 = false;
+		is_Opening = true;
+		is_Opening2 = false;
+		is_Opening3 = false;
+		is_Opening4 = false;
 		is_Stage1_Start = false;
 		game_over = false;
 
@@ -88,7 +88,6 @@ public:
 		y1 = 300;
 		finish_count = 0;
 	}
-
 	void init() {
 		op_num = 0;
 
@@ -466,8 +465,7 @@ public:
 
 				}
 			}
-
-			if (rd2 <= x + 70 && rd2 >= x - 70) {
+			if (rd2 <= x + 50 && rd2 >= x - 50) {
 				if (y2 <= germ_x + 70 && y2 >= germ_x - 70) {
 					count_heart += 1;
 					remake2();
@@ -865,7 +863,7 @@ public:
 		x_p3 = 330 + rand() % 100;
 
 	}
-	void Triangle() {
+	void Circle() {
 		sum_x[0] = germ_x - x_p1;
 		sum_x[1] = germ_x - x_p2;
 		sum_x[2] = germ_x - x_p3;
@@ -960,7 +958,7 @@ public:
 			//여기까지
 
 		}
-		Triangle();
+		Circle();
 		//여기까지
 		if (square_x[0] + square_y[0] <= 2500) {
 
