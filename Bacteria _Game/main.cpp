@@ -12,7 +12,7 @@ using namespace doodle;
 
 
 void reset();
-int count_num = 4;
+int count_num = 1;
 
 
 
@@ -349,16 +349,18 @@ public:
 	void start() {
 		rd1 = rand() % 720 - 360;
 		rd2 = rand() % 720 - 360;
+		ruru_x = 250;
+		ruru_y = 330;
 		is_trigger = false;
 		clear = false;
 		Start = false;
+		game_over = false;
 		count_heart = 0;
 		finish_count = 0;
 		y1 = 340;
 		y2 = 340;
 		germ_x = -300;
 		x = -20;
-		finish_count = 0;
 	}
 
 	void init() {
@@ -504,7 +506,7 @@ public:
 	void draw() {
 		//이곳에 스테이지 배경 캐릭터사진
 
-		draw_image(Stage2_Start,0,0, 720, 720);
+		draw_image(Stage2_Start, 0, 0, 720, 720);
 
 
 		if (Start)
@@ -799,10 +801,12 @@ class Stage4 {
 	int count_speed1 = 0;
 	int count_speed2 = 0;
 	int count_speed3 = 0;
+	double s = 1;
 	bool Manager = false;
 	bool mouse_press = false;
 	bool is_trigger = false;
 	bool Start = false;
+	bool game_cl = false;
 	bool game_over;
 	Image over;
 	Image d_germ;
@@ -816,36 +820,31 @@ class Stage4 {
 
 public:
 	void start() {
-		int finish_count = 0;
-		int size = 80;
-		int x_p1 = 330;
-		int x_p2 = 330;
-		int x_p3 = 330;
-		int rd1;
-		int rd2;
-		int rd3;
-		int speed1 = 20;
-		int speed2 = 20;
-		int speed3 = 20;
-		int germ_x = -250;
-		int germ_y = -50;
-		int red_cell_size = 80;
-		int count_speed1 = 0;
-		int count_speed2 = 0;
-		int count_speed3 = 0;
-		bool Manager = false;
-		bool mouse_press = false;
-		bool is_trigger = false;
-		bool Start = false;
-		bool game_over;
-		Image over;
-		Image Back;
-		Image Stage_4_Background;
-		Image red_blood_cell[3];
-		Image germ_2;
-		Image red_cell_come;
-		Image Stage4_Start;
-		Image game_clear;
+		finish_count = 0;
+		size = 80;
+		x_p1 = 330;
+		x_p2 = 330;
+		x_p3 = 330;
+		rd1;
+		rd2;
+		rd3;
+		speed1 = 20;
+		speed2 = 20;
+		speed3 = 20;
+		germ_x = -250;
+		germ_y = -50;
+		red_cell_size = 80;
+		count_speed1 = 0;
+		count_speed2 = 0;
+		count_speed3 = 0;
+		s = 1;
+		Manager = false;
+		mouse_press = false;
+		is_trigger = false;
+		Start = false;
+		game_cl = false;
+
+		game_over;
 	}
 
 	void remake1() {
@@ -923,7 +922,7 @@ public:
 			else {
 				x_p1 -= speed1;
 				if (x_p1 <= -330) {
-					speed1 += 10;
+					speed1 += s;
 					count_speed1 += 1;
 				}
 			}
@@ -937,7 +936,7 @@ public:
 			else {
 				x_p2 -= speed2;
 				if (x_p2 <= -330) {
-					speed2 += 10;
+					speed2 += s;
 					count_speed2 += 1;
 				}
 			}
@@ -951,7 +950,7 @@ public:
 			else {
 				x_p3 -= speed3;
 				if (x_p3 <= -330) {
-					speed3 += 10;
+					speed3 += s;
 					count_speed3 += 1;
 				}
 			}
@@ -975,22 +974,45 @@ public:
 
 			is_trigger = true;
 		}
-
-		if (count_speed1 == 10) {
-			if (count_speed2 == 10) {
-				if (count_speed3 == 10) {							//5스테이지로 넘어가는 조건
-					finish_count = 1;
+		if (is_trigger == false) {
+			if (count_speed1 == 10) {
+				if (count_speed2 == 10) {
+					if (count_speed3 == 10) {							//5스테이지로 넘어가는 조건
+						game_cl = true;
+					}
 				}
 			}
 		}
 
-		if (is_trigger) {
-			if (GetAsyncKeyState(VK_TAB) & 0x8000) {
-				cout << "탭" << endl;
-				game_over = true;
+		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {						// 관리자 비밀(버그)키
+			if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+				if (GetAsyncKeyState(VK_TAB) & 0x8000) {
+					//관리자키 on
+					Manager = true;
+				}
+			}
+		}
+		if (Manager) {
+			game_cl = true;
+			is_trigger == false;
+		}
+
+		if (game_cl == false) {
+			if (is_trigger) {
+				cout << "실행중" << endl;
+				if (GetAsyncKeyState(VK_TAB) & 0x8000) {
+					cout << "탭" << endl;
+					game_over = true;
+				}
 			}
 		}
 
+		if (game_cl) {
+			if (GetAsyncKeyState(VK_RETURN) & 0x0001)
+			{
+				finish_count = 1;
+			}
+		}
 		if (game_over) {
 			reset();
 		}
@@ -1008,10 +1030,16 @@ public:
 			draw_image(red_blood_cell[2], x_p3, rd3, red_cell_size, red_cell_size);
 		}
 
+
 		if (is_trigger) {
-
 			draw_image(over, 0, 0, 720, 720);						//게임오버화면 그리기
+		}
 
+		if (game_cl) {
+			draw_image(game_clear, 0, 0, 720, 720);
+			if (GetAsyncKeyState(VK_RETURN) & 0x0001) {
+				finish_count = 1;
+			}
 		}
 	}
 
@@ -1043,8 +1071,8 @@ class Stage5 {
 	int Gauge_x = -300;
 	int Gauge2_x = 163;
 	double prev_time = 0;
-	int Heart_L = 500;
-	int Heart_T = 550;
+	int Heart_L = 1000;
+	int Heart_T = 700;
 	int en_num = 0;
 
 	Image Back;
@@ -1094,8 +1122,8 @@ public:
 		Gauge_x = -300;
 		Gauge2_x = 163;
 		prev_time = 0;
-		Heart_L = 500;
-		Heart_T = 550;
+		Heart_L = 1000;
+		Heart_T = 700;
 		en_num = 0;
 
 		y5_1 = -200;
@@ -1191,15 +1219,15 @@ public:
 			}
 
 			if (Heart) {
-				Heart_L = 570;
-				Heart_T = 600;
+				Heart_L = 1100;
+				Heart_T = 800;
 				counter2 = 0;
 				is_Gauge2 = false;
 			}
 
 			if (Heart == false) {
-				Heart_L = 500;
-				Heart_T = 550;
+				Heart_L = 1000;
+				Heart_T = 700;
 			}
 
 
@@ -1208,28 +1236,26 @@ public:
 
 
 			if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
-				draw_image(germ3, 0, y5_1, 150, 200);
-				draw_image(blood, 0, -300, 900, 500);
-				if (y5_1 <= -10) {
+				if (y5_1 <= -100) {
 					cout << "올라감" << endl;
-					y5_1 += 4;
+					cout << y5_1 << endl;
+					y5_1 += 2;
 				}
 			}
 			else {
-				draw_image(germ3, 0, y5_1, 150, 200);
-				draw_image(blood, 0, -300, 900, 500);
 				if (y5_1 >= -200) {
 					cout << "떨어짐" << endl;
+					cout << y5_1 << endl;
 					y5_1 -= 4;
 				}
 			}
 
 			for (int i = 0; i < counter; ++i) {
 				draw_image(Gauge, Gauge_x + i * 5, 300, 5, 25);
-				cout << counter << endl;
+
 			}
 
-			if (y5_1 >= -10) {
+			if (y5_1 >= -100) {
 				if (counter < 122) {
 					if (mini_counter < 10) {
 						mini_counter++;
@@ -1241,15 +1267,8 @@ public:
 					}
 				}
 			}
-			else if (y5_1 <= -80) {
-				//cout << "-80 언더" << endl;
-				// 게이지바 깎이게 만들기.
 
-			}
 
-			for (int j = 0; j < counter2; ++j) {
-
-			}
 
 			if (counter == 61) {
 				heart_gauge = true;
@@ -1263,8 +1282,8 @@ public:
 		if (Manager)
 		{
 			if (Heart == true) {
-				if (y5_1 <= -5) {
-					if (y5_1 >= -85) {
+				if (y5_1 <= 0) {
+					if (y5_1 >= -150) {
 						is_trigger = true;
 						Start = false;
 
@@ -1365,8 +1384,8 @@ public:
 
 		if (Start == true) {
 			draw_image(Back, 0, 0, 720, 720);
-			draw_image(Heart_stage, 0, -50, Heart_L, Heart_T);
-			draw_image(blood, 0, -300, 900, 550);
+			draw_image(Heart_stage, 0, 0, Heart_L, Heart_T);
+			//	draw_image(blood, -4, -10,  930, 750);
 			draw_image(Gaugeba, 0, 300, 650, 50);
 			draw_image(Gaugeba2, 240, 230, 150, 40);
 
@@ -1375,16 +1394,16 @@ public:
 			}
 
 			if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
-				draw_image(germ3, 0, y5_1, 150, 200);
-				draw_image(blood, 0, -300, 900, 500);
+				draw_image(germ3, 0, y5_1, 120, 170);
+				draw_image(blood, -4, -30, 920, 650);
 				if (y5_1 <= -10) {
 					cout << "올라감" << endl;
 					y5_1 += 5;
 				}
 			}
 			else {
-				draw_image(germ3, 0, y5_1, 150, 200);
-				draw_image(blood, 0, -300, 900, 500);
+				draw_image(germ3, 0, y5_1, 120, 170);
+				draw_image(blood, -4, -30, 920, 650);
 				if (y5_1 >= -200) {
 					cout << "떨어짐" << endl;
 					y5_1 -= 5;
