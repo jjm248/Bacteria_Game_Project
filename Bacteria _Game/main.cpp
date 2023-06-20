@@ -12,7 +12,7 @@ using namespace doodle;
 
 
 void reset();
-int count_num = 1;
+int count_num = 5;
 
 
 
@@ -42,10 +42,6 @@ public:
 	Image Back;
 	Image next;
 	Image Back_maxe;
-	Image Back_maxe2;
-	Image Back_maxe3;
-	Image Back_maxe4;
-	Image Back_maxe5;
 	Image game_clear;
 	Image Stage1_Start;
 	Image Opening;
@@ -96,11 +92,7 @@ public:
 		over = Image{ "./Game_Stage/GAME_OVER.jpg" };              // 게임 오버 이미지 
 		Back = Image{ "./Game_Stage/Stage1_Background.jpg" };      // 스테이지1 배경 이미지
 		next = Image{ "./Game_Stage/NEXT.png" };                   // 화살표 이미지
-		Back_maxe = Image{ "./Game_Stage/maze1.png" };             // 미로 이미지(1 ~
-		Back_maxe2 = Image{ "./Game_Stage/maze2.png" };
-		Back_maxe3 = Image{ "./Game_Stage/maze3.png" };
-		Back_maxe4 = Image{ "./Game_Stage/maze4.png" };
-		Back_maxe5 = Image{ "./Game_Stage/maze5.png" };            // 미로 이미지 5)
+		Back_maxe = Image{ "./Game_Stage/maze.png" };         // 미로 이미지
 		game_clear = Image{ "./Game_Stage/game_clear.jpg" };
 		Stage1_Start = Image{ "./Game_Stage/Stage1_Start.jpg" };
 		Opening = Image{ "./Game_Stage/Opening.jpg" };
@@ -179,7 +171,7 @@ public:
 				if (x1 <= 130) {
 					if (y1 <= 70) {
 						if (y1 >= -70) {
-							is_trigger = true;                     // 게임오버 화면 실행
+							is_trigger = true;                         // 게임오버 화면 실행
 						}
 					}
 				}
@@ -189,7 +181,7 @@ public:
 				if (x1 <= 360) {
 					if (y1 <= 70) {
 						if (y1 >= -70) {
-							is_trigger = true;                    // 게임오버 화면 실행
+							is_trigger = true;                       // 게임오버 화면 실행
 						}
 					}
 				}
@@ -199,7 +191,7 @@ public:
 				if (x1 <= 360) {
 					if (y1 <= -120) {
 						if (y1 >= -256) {
-							is_trigger = true;                  // 게임오버 화면 실행
+							is_trigger = true;                     // 게임오버 화면 실행
 						}
 					}
 				}
@@ -209,7 +201,7 @@ public:
 				if (x1 <= -200) {
 					if (y1 <= -120) {
 						if (y1 >= -256) {
-							is_trigger = true;	           // 게임오버 화면 실행	
+							is_trigger = true;  	           // 게임오버 화면 실행	
 						}
 					}
 				}
@@ -278,11 +270,11 @@ public:
 
 		if (Start) {
 			draw_image(Back, 0, 0, 720, 720);                         // 몸 속 배경
-			draw_image(Back_maxe, 80, 190, 750, 200);                // 미로 (1 ~      
-			draw_image(Back_maxe2, -210, 0, 720, 200);
-			draw_image(Back_maxe3, 550, 0, 720, 200);
-			draw_image(Back_maxe4, 200, -190, 720, 200);
-			draw_image(Back_maxe5, -550, -190, 720, 200);             // 미로 5)
+			draw_image(Back_maxe, 80, 155, 670, 500);                // 미로 (1 ~      
+			draw_image(Back_maxe, -210, -25, 680, 500);
+			draw_image(Back_maxe, 550, -25, 650, 500);
+			draw_image(Back_maxe, 200, -220, 650, 500);
+			draw_image(Back_maxe, -550, -220, 690, 500);             // 미로 5)
 			draw_image(next, 320, -300, 50, 80);                       // 화살표
 			draw_image(germ, x1, y1, 100, 120);                          // 병균 캐릭터
 
@@ -1059,6 +1051,7 @@ class Stage5 {
 	bool GAMEOVER = false;
 	bool heart_gauge = false;
 	bool heart_gauge2 = false;
+	bool heart_gauge3 = false;
 	bool Start = false;
 	bool Manager = true;
 	bool Ending = false;
@@ -1085,8 +1078,7 @@ class Stage5 {
 	Image GAME_OVER;
 	Image GAME_OVER3;
 	Image game_clear;
-	Image Door;
-	Image Door2;
+	Image gateway;  // 마지막 관문
 	Image Heart_stage;
 	Image blood;
 	Image Ending1;
@@ -1111,6 +1103,7 @@ public:
 		GAMEOVER = false;
 		heart_gauge = false;
 		heart_gauge2 = false;
+		heart_gauge3 = false;
 		Start = false;
 		Manager = true;
 		Ending = false;
@@ -1147,8 +1140,7 @@ public:
 		GAME_OVER = Image{ "./Game_Stage/GAME_OVER.jpg" };
 		GAME_OVER3 = Image{ "./Game_Stage/GAME_OVER3.jpg" };
 		game_clear = Image{ "./Game_Stage/game_clear.jpg" };
-		Door = Image{ "./Game_Stage/Door.png" };
-		Door2 = Image{ "./Game_Stage/Door2.png" };
+		gateway = Image{ "./Game_Stage/gateway.png" };
 		Ending1 = Image{ "./Game_Stage/Ending.jpg" };
 		Ending2 = Image{ "./Game_Stage/Ending2.jpg" };
 		Ending3 = Image{ "./Game_Stage/Ending3.jpg" };
@@ -1187,24 +1179,31 @@ public:
 
 			if (is_Gauge2 == false) {
 				if (heart_gauge) {
-					if (prev_time > 0.3) {                                    // 심장 게이지
+					if (prev_time > 0.4) {                                    // 심장 게이지
 						prev_time = 0;
 						if (counter2 < 14) counter2++;
 						//		cout << "심장 게이지2" << endl;
 					}
 				}
 				else {
-					if (prev_time > 0.5) {                                    // 심장 게이지
+					if (prev_time > 0.8) {                                    // 심장 게이지
 						prev_time = 0;
 						if (counter2 < 14) counter2++;
 						//		cout << "심장 게이지" << endl;
 					}
 				}
 				if (heart_gauge2) {
-					if (prev_time > 0.1) {                                    // 심장 게이지
+					if (prev_time > 0.2) {                                    // 심장 게이지
 						prev_time = 0;
 						if (counter2 < 14) counter2++;
 						//		cout << "심장 게이지3" << endl;
+					}
+				}
+				if (heart_gauge3) {
+					if (prev_time > 0.05) {                                    // 심장 게이지
+						prev_time = 0;
+						if (counter2 < 14) counter2++;
+						//		cout << "심장 게이지4" << endl;
 					}
 				}
 				Heart = false;
@@ -1237,15 +1236,11 @@ public:
 
 			if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
 				if (y5_1 <= -100) {
-					cout << "올라감" << endl;
-					cout << y5_1 << endl;
 					y5_1 += 2;
 				}
 			}
 			else {
 				if (y5_1 >= -200) {
-					cout << "떨어짐" << endl;
-					cout << y5_1 << endl;
 					y5_1 -= 4;
 				}
 			}
@@ -1270,12 +1265,19 @@ public:
 
 
 
-			if (counter == 61) {
+			if (counter == 35) {
 				heart_gauge = true;
+				cout << "심장 게이지 ON" << endl;
 			}
-			if (counter == 85) {
+			if (counter == 58) {
 				heart_gauge2 = true;
 				heart_gauge = false;
+				cout << "심장 게이지2 ON" << endl;
+			}
+			if (counter == 100) {
+				heart_gauge2 = false;
+				heart_gauge3 = true;
+				cout << "심장 게이지3 ON" << endl;
 			}
 		}
 
@@ -1324,7 +1326,6 @@ public:
 				if (x5 >= -270) {
 					if (y5 <= 250) {
 						if (y5 >= -10) {
-							cout << "좌심" << endl;
 							Ending = true;
 
 						}
@@ -1336,7 +1337,6 @@ public:
 				if (x5 <= 270) {
 					if (y5 <= 250) {
 						if (y5 >= -10) {
-							cout << "우심" << endl;
 							GAMEOVER = true;
 							Start = false;
 						}
@@ -1385,7 +1385,6 @@ public:
 		if (Start == true) {
 			draw_image(Back, 0, 0, 720, 720);
 			draw_image(Heart_stage, 0, 0, Heart_L, Heart_T);
-			//	draw_image(blood, -4, -10,  930, 750);
 			draw_image(Gaugeba, 0, 300, 650, 50);
 			draw_image(Gaugeba2, 240, 230, 150, 40);
 
@@ -1394,10 +1393,9 @@ public:
 			}
 
 			if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
-				draw_image(germ3, 0, y5_1, 120, 170);
+				draw_image(germ3, 0, y5_1, 150, 170);
 				draw_image(blood, -4, -30, 920, 650);
 				if (y5_1 <= -10) {
-					cout << "올라감" << endl;
 					y5_1 += 5;
 				}
 			}
@@ -1405,7 +1403,6 @@ public:
 				draw_image(germ3, 0, y5_1, 120, 170);
 				draw_image(blood, -4, -30, 920, 650);
 				if (y5_1 >= -200) {
-					cout << "떨어짐" << endl;
 					y5_1 -= 5;
 				}
 			}
@@ -1430,9 +1427,7 @@ public:
 		}
 
 		if (Last) {
-			draw_image(Back, 0, 0, 720, 720);
-			draw_image(Door, -180, 100, 150, 350);
-			draw_image(Door2, 180, 100, 150, 350);
+			draw_image(gateway, 0, 0, 720, 720);
 			draw_image(germ1, x5, y5, 80, 150);
 		}
 
