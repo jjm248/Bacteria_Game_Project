@@ -12,7 +12,7 @@ using namespace doodle;
 
 
 void reset();
-int count_num = 5;
+int count_num = 4;
 
 
 
@@ -342,7 +342,7 @@ public:
 		rd1 = rand() % 720 - 360;
 		rd2 = rand() % 720 - 360;
 		ruru_x = 250;
-		ruru_y = 330;
+		ruru_y = 250;
 		is_trigger = false;
 		clear = false;
 		Start = false;
@@ -456,8 +456,11 @@ public:
 				}
 				if (count_heart == 10) {
 					clear = true;
-
 				}
+
+
+
+
 			}
 			if (rd2 <= x + 50 && rd2 >= x - 50) {
 				if (y2 <= germ_x + 70 && y2 >= germ_x - 70) {
@@ -508,10 +511,13 @@ public:
 			draw_image(gastric, rd1, y1, 50, 50);							//장애물
 			draw_image(heart, rd2, y2, 50, 50);
 			draw_image(number_of_hearts, ruru_x - 20, 230, 500, 500, 200, 200, 400, 400);
-
-			if (is_trigger) {
-				draw_image(over, 0, 0, 720, 720);
+			if (clear == false)
+			{
+				if (is_trigger) {
+					draw_image(over, 0, 0, 720, 720);
+				}
 			}
+
 			if (is_trigger == false) {
 				switch (count_heart) {
 				case 1:
@@ -560,6 +566,7 @@ public:
 };
 class Stage3 {
 
+	bool state_key = false;
 	bool is_trigger = false;
 	bool clear = false;
 	bool Start = false;
@@ -592,6 +599,7 @@ class Stage3 {
 public:
 
 	void start() {
+		state_key = false;
 		is_trigger = false;
 		clear = false;
 		Start = false;
@@ -629,53 +637,35 @@ public:
 
 
 		if (Start == true) {
-			if (GetAsyncKeyState(VK_SPACE) & 0x0001) {
+
+			if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
 				//cout << "입력 받는 중" << endl;
-				draw_image(germ1, -180, -150, 220, 320);
-				if (counter < 14) {
-					if (mini_counter < 8) {
-						mini_counter++;
-					}
-					else {
-						counter++;
-						mini_counter = 0;
+				if (!state_key) {
+					cout << "작동됨?" << endl;
+					state_key = true;
+					if (counter < 14) {
+
+						if (mini_counter < 8) {
+							mini_counter++;
+						}
+						else {
+							counter++;
+							mini_counter = 0;
+						}
+
 					}
 				}
+
 			}
 			else {
-				draw_image(germ2, -180, -150, 220, 320);
+				state_key = false;
 			}
-
-
-			if (is_push == 1) {
-
-				if (counter < 14) {
-					if (mini_counter < 10) {
-						mini_counter++;
-					}
-					else {
-						counter++;
-						mini_counter = 0;
-					}
-				}
-			}
-
-			draw_image(germ1, -180, -150, 220, 320);
-
-			/*else {
-				draw_image(germ2, -180, -150, 220, 320);
-			}*/
-
 
 			prev_time += DeltaTime;
 
-			if (prev_time > 1.5) {                                    // 팡이 게이지 채워지는 시간
+			if (prev_time > 1.3) {                                    // 팡이 게이지 채워지는 시간
 				prev_time = 0;
-				draw_image(Mold, 180, -150, 200, 300);
 				if (counter2 < 14) counter2++;
-			}
-			else {
-				draw_image(Mold3, 180, -150, 200, 300);
 			}
 
 			if (counter2 == 14) {
@@ -712,30 +702,12 @@ public:
 			draw_image(Back, 0, 0, 720, 720);
 			draw_image(Gaugeba, 180, 250, 300, 50);
 			draw_image(Gaugeba2, -180, 250, 300, 50);
+			draw_image(germ1, -180, -150, 220, 320);
+			draw_image(Mold, 180, -150, 200, 300);
 
-			if (GetAsyncKeyState(VK_SPACE) & 0x0001) {
-				//cout << "입력 받는 중" << endl;
-				draw_image(germ1, -180, -150, 220, 320);
-				if (counter < 14) {
-					if (mini_counter < 8) {
-						mini_counter++;
-					}
-					else {
-						counter++;
-						mini_counter = 0;
-					}
-				}
-			}
-			else {
-				draw_image(germ2, -180, -150, 220, 320);
-			}
 			if (prev_time > 1.6) {                                    // 팡이 게이지 채워지는 시간
 				prev_time = 0;
-				draw_image(Mold, 180, -150, 200, 300);
 				if (counter2 < 14) counter2++;
-			}
-			else {
-				draw_image(Mold3, 180, -150, 200, 300);
 			}
 
 			for (int i = 0; i < counter; ++i) {
@@ -979,14 +951,13 @@ public:
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000) {						// 관리자 비밀(버그)키
 			if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
 				if (GetAsyncKeyState(VK_TAB) & 0x8000) {
-					//관리자키 on
-					Manager = true;
+					cout << "관리자키 on" << endl;
+					game_cl = true;
 				}
 			}
 		}
 		if (Manager) {
 			game_cl = true;
-			is_trigger == false;
 		}
 
 		if (game_cl == false) {
@@ -1000,11 +971,12 @@ public:
 		}
 
 		if (game_cl) {
-			if (GetAsyncKeyState(VK_RETURN) & 0x0001)
-			{
+			if (GetAsyncKeyState(VK_RETURN) & 0x0001) { // 안됌
+				cout << "들어와" << endl;
 				finish_count = 1;
 			}
 		}
+
 		if (game_over) {
 			reset();
 		}
@@ -1022,16 +994,15 @@ public:
 			draw_image(red_blood_cell[2], x_p3, rd3, red_cell_size, red_cell_size);
 		}
 
-
-		if (is_trigger) {
-			draw_image(over, 0, 0, 720, 720);						//게임오버화면 그리기
+		if (game_cl == false)
+		{
+			if (is_trigger) {
+				draw_image(over, 0, 0, 720, 720);						//게임오버화면 그리기
+			}
 		}
 
 		if (game_cl) {
 			draw_image(game_clear, 0, 0, 720, 720);
-			if (GetAsyncKeyState(VK_RETURN) & 0x0001) {
-				finish_count = 1;
-			}
 		}
 	}
 
