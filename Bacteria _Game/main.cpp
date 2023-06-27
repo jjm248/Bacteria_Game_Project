@@ -12,7 +12,7 @@ using namespace doodle;
 
 
 void reset();
-int count_num = 4;
+int count_num = 1;
 
 
 
