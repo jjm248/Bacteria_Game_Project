@@ -12,7 +12,7 @@ using namespace doodle;
 
 
 void reset();
-int count_num = 1;
+int count_num = 4;
 
 
 
@@ -756,9 +756,9 @@ class Stage4 {
 	int rd1;
 	int rd2;
 	int rd3;
-	int speed1 = 20;
-	int speed2 = 20;
-	int speed3 = 20;
+	int speed1 = 1;
+	int speed2 = 1;
+	int speed3 = 1;
 	int germ_x = -250;
 	int germ_y = -50;
 	int red_cell_size = 80;
@@ -792,9 +792,9 @@ public:
 		rd1;
 		rd2;
 		rd3;
-		speed1 = 20;
-		speed2 = 20;
-		speed3 = 20;
+		speed1 = 1;
+		speed2 = 1;
+		speed3 = 1;
 		germ_x = -250;
 		germ_y = -50;
 		red_cell_size = 80;
@@ -860,9 +860,17 @@ public:
 
 		draw_image(Stage4_Start, 0, 0, 720, 720);
 
-		if (GetAsyncKeyState(VK_RETURN) & 0x0001 && Start == false) {
-			Start = true;
-			cout << "스타트" << endl;
+		if (GetAsyncKeyState(VK_RETURN) & 0x0001) {
+
+			if (Start == false) {
+				Start = true;
+				cout << "스타트" << endl;
+			}
+
+			if (game_cl) {				
+				cout << "들어와" << endl;
+				finish_count = 1;				
+			}
 		}
 
 		if (Start)
@@ -970,12 +978,7 @@ public:
 			}
 		}
 
-		if (game_cl) {
-			if (GetAsyncKeyState(VK_RETURN) & 0x0001) { // 안됌
-				cout << "들어와" << endl;
-				finish_count = 1;
-			}
-		}
+		
 
 		if (game_over) {
 			reset();
